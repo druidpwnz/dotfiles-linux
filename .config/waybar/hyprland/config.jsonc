@@ -1,0 +1,116 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 40,
+  "margin-top": 10,
+  "margin-left": 12,
+  "margin-right": 12,
+  "spacing": 6,
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "mpris"],
+  "modules-center": ["clock"],
+  "modules-right": ["group/system", "idle_inhibitor", "network", "bluetooth", "pulseaudio", "backlight", "battery", "hyprland/language", "tray", "custom/notification", "custom/power"],
+  "custom/launcher": {
+    "format": "",
+    "tooltip-format": "Applications · Super+D",
+    "on-click": "wofi --show drun"
+  },
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "sort-by-number": true,
+    "persistent-workspaces": {"*": 5}
+  },
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "⏸ {dynamic}",
+    "player-icons": {"default": "", "spotify": ""},
+    "dynamic-order": ["title", "artist"],
+    "dynamic-len": 24,
+    "title-len": 24,
+    "artist-len": 16,
+    "max-length": 28,
+    "tooltip-format": "{title}\n{artist}\nLeft: play/pause · Middle: previous · Right: next"
+  },
+  "clock": {
+    "format": "{:%a, %d %b  ·  %H:%M}",
+    "format-alt": "{:%Y-%m-%d  ·  %H:%M:%S}",
+    "interval": 1,
+    "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "format": {"today": "<span color='#ff79c6'><b>{}</b></span>"}
+    }
+  },
+  "group/system": {
+    "orientation": "horizontal",
+    "drawer": {"transition-duration": 250, "children-class": "system-drawer", "transition-left-to-right": false},
+    "modules": ["cpu", "memory", "disk"]
+  },
+  "cpu": {"format": " {usage}%", "interval": 3, "tooltip-format": "CPU {usage}% · Hover for RAM and disk", "on-click": "plasma-systemmonitor"},
+  "memory": {"format": " {percentage}%", "interval": 5, "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB"},
+  "disk": {"format": " {percentage_used}%", "path": "/", "interval": 60, "tooltip-format": "Root: {free} available"},
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {"activated": "", "deactivated": ""},
+    "tooltip-format-activated": "Keep awake enabled",
+    "tooltip-format-deactivated": "Automatic screen lock enabled"
+  },
+  "network": {
+    "format-wifi": " {signalStrength}%",
+    "format-ethernet": "",
+    "format-disconnected": "⚠ Offline",
+    "tooltip-format": "{ifname} · {ipaddr}\n↓ {bandwidthDownBytes}  ↑ {bandwidthUpBytes}",
+    "tooltip-format-wifi": "{essid} · {signalStrength}%\n{ipaddr}\n↓ {bandwidthDownBytes}  ↑ {bandwidthUpBytes}",
+    "on-click": "nm-connection-editor",
+    "interval": 5
+  },
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "",
+    "format-connected": " {num_connections}",
+    "tooltip-format": "Bluetooth: {status}",
+    "tooltip-format-connected": "{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "on-click": "systemsettings kcm_bluetooth"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {"default": ["", "", ""]},
+    "scroll-step": 5,
+    "max-volume": 100,
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "tooltip-format": "{desc} · {volume}%"
+  },
+  "backlight": {
+    "format": "☀ {percent}%",
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl --min-value=1 set 5%-"
+  },
+  "battery": {
+    "states": {"warning": 25, "critical": 10},
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip-format": "{timeTo} · {power:0.1f} W"
+  },
+  "hyprland/language": {"format": "{short}", "format-en": "EN", "format-ru": "RU", "format-uk": "UA"},
+  "tray": {"icon-size": 16, "spacing": 8},
+  "custom/notification": {
+    "exec": "swaync-client -swb",
+    "return-type": "json",
+    "restart-interval": 5,
+    "format": "{icon}",
+    "format-icons": {"notification": " ●", "none": "", "dnd-notification": " ●", "dnd-none": "", "inhibited-notification": " ●", "inhibited-none": "", "dnd-inhibited-notification": " ●", "dnd-inhibited-none": ""},
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "tooltip": false
+  },
+  "custom/power": {
+    "format": "",
+    "tooltip-format": "Session controls",
+    "on-click": "bash \"${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts/power.sh\""
+  }
+}
